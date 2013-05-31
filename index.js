@@ -35,17 +35,22 @@ module.exports = function(dbUrl, component) {
   });
 
   return function(message, cb) {
+    var clonedMessage = {};
+    Object.keys( message ).forEach(function ( k ) {
+      clonedMessage[k] = message[k];
+    });
+
     if (!dbCon) {
-      console.error("Can't insert to Mongo since the app is not connected. message:", message);
+      console.error("Can't insert to Mongo since the app is not connected. message:", clonedMessage);
       return 1;
     }
 
     var now = new Date();
-    message.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
-    message.component = component;
-    message = formatMessage(message);
+    clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
+    clonedMessage.meta.component = component;
+    clonedMessage = formatMessage(clonedMessage);
 
-    dbCon.collection('log').insert(message,
+    dbCon.collection('log').insert(clonedMessage,
     function(err, device) {
       if (err) { 
         cb && cb("Error when Saving log in MongoDB", err);
