@@ -10,14 +10,15 @@ Click [here](https://git.corp.attinteractive.com/dstools/quai-log) for more deta
 
 ## Examples
     
- `npm install`
+Install as a library:    
+ `npm install git+ssh://git@github.com:yp-engineering/quai-mongo.git`
 
 Exapmle 1 - not using callbacks
 
 ```js
 'use strict';
 
-var db = require('./index.js');
+var db = require('quai-mongo');
 var message = {foo: 'bar'}
 
 var insert = db('mongodb://localhost/quai', 'loc');
@@ -33,6 +34,11 @@ setTimeout(function(){
 
 example 2 - using callbacks
 ```js
+'use strict';
+
+var db = require('quai-mongo');
+var message = {foo: 'bar'}
+
 var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
   if (err) { console.error(err); return 1; };
   console.log('Connected.');
@@ -70,6 +76,19 @@ var insert = db('mongodb://localhost/quai', 'loc');
 Inserts `message` to MongoDB.  
 When Insert is complete cb(err) is fired.
 
+## Install
+
+as a library
+
+		npm install git+ssh://git@github.com:yp-engineering/quai-mongo.git
+and `require('quai-mongo');` in your code
+
+
+for development
+
+		git clone git@github.com:yp-engineering/quai-mongo.git
+
+`node test.js`
 
 ## Misc 
 
