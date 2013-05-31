@@ -63,7 +63,7 @@ var db = require('./index.js');
 
 ### db(mongoUrl, component, format, cb);
 
-Connet to a MongoDB at `mongoUrl`. `component` is a string, `format` is an optional formatting function and cb is optional callback. It returns a function that can do the inserts(see below).  
+Connet to a MongoDB at `mongoUrl`. `component` is a string, `format` is an optional formatting function and cb is optional callback. It returns a function that insert a message(see below).  
 when connection established, cb(err) fires.
 
 
