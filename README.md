@@ -87,6 +87,7 @@ and `require('quai-mongo');` in your code
 for development
 
 		git clone git@github.com:yp-engineering/quai-mongo.git
+    npm install
 
 `node test.js`
 
