@@ -1,21 +1,25 @@
 "use strict";
 
 // module for sending messages to log collection in mongo
-// parameters
-// url to mongoDB
 //
-// return function that inserts the data
-// parameters
-// json message(string), component (string) and callback
-//
-// usage
-// var db = require('./db.js')
-// insert = db('mongodb://localhost/quai', 'loc')
-//
-// insert({'key': 'value'}, function(err){
-//   if(err) throw err;
-// })
-//
+// Usage:
+// var db = require('quai-mongo');
+// var message = {foo: 'bar'}
+// 
+// var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+//   if (err) { console.error(err); return 1; };
+//   console.log('Connected.');
+// 
+//   insert(message, function(err){
+//     if (err) { console.error(err); return 1; };
+// 
+//     console.log('Saved. message: ', message);
+//   });
+// });
+
+// =>
+// Connected.
+// Saved. message:  { foo: 'bar' }
 
 // core module
 
@@ -98,54 +102,6 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     });
   };
 };
-
-// function insert (message, cb) {
-//   var clonedMessage = {};
-//   Object.keys( message ).forEach(function ( k ) {
-//     clonedMessage[k] = message[k];
-//   });
-// 
-//   if (!dbCon) {
-//     var msg = "Can't insert to Mongo since the app is not connected. message:", clonedMessage;
-// 
-//     if(cb) {
-//       cb(msg); 
-//       return 1;
-//     };
-// 
-//     console.error(msg);
-//     return 1;
-//   };
-// 
-//   if (formatMessage) {
-//     clonedMessage = formatMessage(clonedMessage);
-//   };
-//   // var now = new Date();
-//   // clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
-//   // clonedMessage.meta.component = component;
-//   // clonedMessage = formatMessage(clonedMessage);
-// 
-//   dbCon.collection('log').insert(clonedMessage,
-//   function(err, device) {
-//     if (err) { 
-//       var msg = 'Error when Saving log in MongoDB';
-//       if (cb) {
-//         cb(msg, err); 
-//         return 1;
-//       }
-// 
-//       console.error(msg, err);
-//       return 1;
-//     }
-// 
-//     if (cb) {
-//       cb(null, clonedMessage);
-//       return 1;
-//     }
-// 
-//     console.log("Saved to MongoDB", clonedMessage);
-//   });
-// };
 
 function pad (str) { 
   str = String(str); 
