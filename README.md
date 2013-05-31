@@ -6,6 +6,8 @@ Click [here](https://git.corp.attinteractive.com/dstools/quai-log) for more deta
 ## Index
 
 * [Examples](#examples)
+* [Methods](methods)
+* [Install](#install)
 * [Misc](#misc)
 
 ## Examples
