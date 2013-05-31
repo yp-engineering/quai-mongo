@@ -1,0 +1,17 @@
+{
+  "name": "quai-mongo",
+  "version": "0.0.0",
+  "description": "## Index",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yp-engineering/quai-mongo.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "ea0fe0e4d796b0b92793ea714c1143dce89c48a3"
+}
