@@ -1,22 +1,75 @@
 # Quai Mongo
 
+This module provide logging for Quai Platform. It inserts messages to MongoDB.  
+Click [here](https://git.corp.attinteractive.com/dstools/quai-log) for more details
+
 ## Index
 
-* [What is this project?](#what-is-this-project?)
-* [Run](#run)
+* [Examples](#examples)
 * [Misc](#misc)
 
-## What is this project?
-
-This project provide logging for Quai Platform. It inserts messages to MongoDB.  
-Click [here](https://git.corp.attinteractive.com/dstools/quai-log) for more details.  
-
-## Run
+## Examples
     
-    npm install
+ `npm install`
 
-    insert = require('./index.js')('mongodb://localhost/quai', 'api')  # url to mongo and component
-    insert({foo: 'bar'})
+Exapmle 1 - not using callbacks
+
+```js
+'use strict';
+
+var db = require('./index.js');
+var message = {foo: 'bar'}
+
+var insert = db('mongodb://localhost/quai', 'loc');
+// wait a bit for db connection
+setTimeout(function(){
+  insert(message);
+}, 100);
+
+// =>
+// connected to mongoDB mongodb://localhost/quai
+// Saved to MongoDB. message: {"foo":"bar","_id":"51a908865dc559285f000001"}
+```
+
+example 2 - using callbacks
+```js
+var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+  if (err) { console.error(err); return 1; };
+  console.log('Connected.');
+
+  insert(message, function(err){
+    if (err) { console.error(err); return 1; };
+
+    console.log('Saved. message: ', message);
+  });
+});
+
+// =>
+// Connected.
+// Saved. message:  { foo: 'bar' }
+```
+
+## Methods
+
+```js
+var db = require('./index.js');
+```
+
+### db(mongoUrl, component, format, cb);
+
+Connet to a MongoDB at `mongoUrl`. `component` is a string, `format` is an optional formatting functio and cb is optional callback. It returns a function that can do the inserts(see below).  
+when connection established, cb(err) fires.
+
+
+```js
+var insert = db('mongodb://localhost/quai', 'loc');
+```
+
+### insert(message, cb);
+
+Inserts `message` to MongoDB.  
+When Insert is complete cb(err) is fired.
+
 
 ## Misc 
 

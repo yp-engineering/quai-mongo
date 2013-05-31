@@ -1,13 +1,31 @@
 'use strict';
 
 var db = require('./index.js');
+var message = {foo: 'bar'}
 
-var insert = db('mongodb://localhost/quai', 'loc', null, function(){ 
-  insert({key: 'value'});
+// example 1 - not using callbacks
+var insert = db('mongodb://localhost/quai', 'loc');
+// wait a bit for db connection
+setTimeout(function(){
+  insert(message);
+}, 100);
+
+// =>
+// connected to mongoDB mongodb://localhost/quai
+// Saved to MongoDB. message: {"foo":"bar","_id":"51a908865dc559285f000001"}
+
+// example 2 - using callbacks
+var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+  if (err) { console.error(err); return 1; };
+  console.log('Connected.');
+
+  insert(message, function(err){
+    if (err) { console.error(err); return 1; };
+
+    console.log('Saved. message: ', message);
+  });
 });
 
-
-// insert({'key': 'value'}, function(err, message){
-//   if(err) throw err;
-//   console.log('insert successfuly', message);
-// })
+// =>
+// Connected.
+// Saved. message:  { foo: 'bar' }

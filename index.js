@@ -57,7 +57,7 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     });
 
     if (!dbCon) {
-      var msg = "Can't insert message since there is no connection to MongoDB";
+      var msg = "Can't insert message since there is no connection to MongoDB.";
 
       if(cb) {
         cb(msg); 
@@ -79,13 +79,13 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     dbCon.collection('log').insert(clonedMessage,
     function(err, device) {
       if (err) { 
-        var msg = 'Error when Saving log in MongoDB';
+        var msg = 'Error when Saving log in MongoDB. error:' + err;
         if (cb) {
-          cb(msg, err); 
+          cb(msg); 
           return 1;
         }
 
-        console.error(msg, err);
+        console.error(msg);
         return 1;
       }
 
