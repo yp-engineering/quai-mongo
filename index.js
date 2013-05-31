@@ -15,6 +15,11 @@
 // insert({'key': 'value'}, function(err){
 //   if(err) throw err;
 // })
+//
+
+// core module
+
+var util = require('util');
 
 // npm package
 var MongoClient = require('mongodb').MongoClient;
@@ -52,14 +57,14 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     });
 
     if (!dbCon) {
-      var message = "Can't insert to Mongo since the app is not connected. message:", clonedMessage;
+      var msg = "Can't insert message since there is no connection to MongoDB";
 
       if(cb) {
-        cb(message); 
+        cb(msg); 
         return 1;
       };
 
-      console.error(message);
+      console.error(util.format('%s message: %j', msg, clonedMessage));
       return 1;
     };
 
@@ -74,16 +79,73 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     dbCon.collection('log').insert(clonedMessage,
     function(err, device) {
       if (err) { 
-        cb && return cb("Error when Saving log in MongoDB", err);
-        console.error("Error when Saving log in MongoDB", err);
+        var msg = 'Error when Saving log in MongoDB';
+        if (cb) {
+          cb(msg, err); 
+          return 1;
+        }
+
+        console.error(msg, err);
+        return 1;
       }
-      else {
-        cb && cb(null, clonedMessage) && return 1;
-        console.log("Saved to MongoDB", clonedMessage);
+
+      if (cb) {
+        cb(null, clonedMessage);
+        return 1;
       }
+
+      console.error(util.format('Saved to MongoDB. message: %j', clonedMessage));
     });
   };
 };
+
+// function insert (message, cb) {
+//   var clonedMessage = {};
+//   Object.keys( message ).forEach(function ( k ) {
+//     clonedMessage[k] = message[k];
+//   });
+// 
+//   if (!dbCon) {
+//     var msg = "Can't insert to Mongo since the app is not connected. message:", clonedMessage;
+// 
+//     if(cb) {
+//       cb(msg); 
+//       return 1;
+//     };
+// 
+//     console.error(msg);
+//     return 1;
+//   };
+// 
+//   if (formatMessage) {
+//     clonedMessage = formatMessage(clonedMessage);
+//   };
+//   // var now = new Date();
+//   // clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
+//   // clonedMessage.meta.component = component;
+//   // clonedMessage = formatMessage(clonedMessage);
+// 
+//   dbCon.collection('log').insert(clonedMessage,
+//   function(err, device) {
+//     if (err) { 
+//       var msg = 'Error when Saving log in MongoDB';
+//       if (cb) {
+//         cb(msg, err); 
+//         return 1;
+//       }
+// 
+//       console.error(msg, err);
+//       return 1;
+//     }
+// 
+//     if (cb) {
+//       cb(null, clonedMessage);
+//       return 1;
+//     }
+// 
+//     console.log("Saved to MongoDB", clonedMessage);
+//   });
+// };
 
 function pad (str) { 
   str = String(str); 
