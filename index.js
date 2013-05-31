@@ -20,18 +20,29 @@
 var MongoClient = require('mongodb').MongoClient;
 
 // my modules
-var formatMessage = require('./formatMessage.js');
+// var formatMessage = require('./formatMessage.js');
 var dbCon = null;
 
-module.exports = function(dbUrl, component) {
+module.exports = function(dbUrl, component, formatMessage, cb) {
   MongoClient.connect(dbUrl, function(err, db) {
     if(err) {
+      if (cb) {
+        cb(err); 
+        return 1;
+      } 
+
       console.error("Can't connect to MongoDB", err);
       return 1;
     };  
 
-    console.log('connected to mongoDB', dbUrl);
     dbCon = db;
+
+    if (cb) {
+      cb(null); 
+      return 1;
+    } 
+
+    console.log('connected to mongoDB', dbUrl);
   });
 
   return function(message, cb) {
@@ -41,22 +52,34 @@ module.exports = function(dbUrl, component) {
     });
 
     if (!dbCon) {
-      console.error("Can't insert to Mongo since the app is not connected. message:", clonedMessage);
-      return 1;
-    }
+      var message = "Can't insert to Mongo since the app is not connected. message:", clonedMessage;
 
-    var now = new Date();
-    clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
-    clonedMessage.meta.component = component;
-    clonedMessage = formatMessage(clonedMessage);
+      if(cb) {
+        cb(message); 
+        return 1;
+      };
+
+      console.error(message);
+      return 1;
+    };
+
+    if (formatMessage) {
+      clonedMessage = formatMessage(clonedMessage);
+    };
+    // var now = new Date();
+    // clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
+    // clonedMessage.meta.component = component;
+    // clonedMessage = formatMessage(clonedMessage);
 
     dbCon.collection('log').insert(clonedMessage,
     function(err, device) {
       if (err) { 
-        cb && cb("Error when Saving log in MongoDB", err);
+        cb && return cb("Error when Saving log in MongoDB", err);
+        console.error("Error when Saving log in MongoDB", err);
       }
       else {
-        cb && cb(null);
+        cb && cb(null, clonedMessage) && return 1;
+        console.log("Saved to MongoDB", clonedMessage);
       }
     });
   };

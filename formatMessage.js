@@ -7,14 +7,15 @@ module.exports = function (message) {
 
   var res = {
     meta: {
-    id: message.meta.id,
-    status: message.meta.status,
-    date: message.meta.date,
-    component: message.meta.component,
-    topic: message.topic,
-    message: {
-    
-    }
+      id: message.meta.id,
+      status: message.meta.status,
+      date: message.meta.date,
+      component: message.meta.component,
+      topic: message.topic,
+      message: {
+      
+      };
+    };
   };
 
   delete message.topic;
