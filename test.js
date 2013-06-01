@@ -4,7 +4,7 @@ var db = require('./index.js');
 var message = {foo: 'bar'}
 
 // example 1 - not using callbacks
-var insert = db('mongodb://localhost/quai', 'loc');
+var insert = db('mongodb://localhost/quai');
 // wait a bit for db connection
 setTimeout(function(){
   insert(message);
@@ -15,7 +15,7 @@ setTimeout(function(){
 // Saved to MongoDB. message: {"foo":"bar","_id":"51a908865dc559285f000001"}
 
 // example 2 - using callbacks
-var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+var insert = db('mongodb://localhost/quai', function(err){ 
   if (err) { console.error(err); return 1; };
   console.log('Connected.');
 

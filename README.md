@@ -23,7 +23,7 @@ Exapmle 1 - not using callbacks
 var db = require('quai-mongo');
 var message = {foo: 'bar'}
 
-var insert = db('mongodb://localhost/quai', 'loc');
+var insert = db('mongodb://localhost/quai');
 // wait a bit for db connection
 setTimeout(function(){
   insert(message);
@@ -41,7 +41,7 @@ example 2 - using callbacks
 var db = require('quai-mongo');
 var message = {foo: 'bar'}
 
-var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+var insert = db('mongodb://localhost/quai', function(err){ 
   if (err) { console.error(err); return 1; };
   console.log('Connected.');
 
@@ -63,14 +63,14 @@ var insert = db('mongodb://localhost/quai', 'loc', null, function(err){
 var db = require('./index.js');
 ```
 
-### db(mongoUrl, component, format, cb);
+### db(mongoUrl, cb);
 
-Connet to a MongoDB at `mongoUrl`. `component` is a string, `format` is an optional formatting function and cb is optional callback. It returns a function that insert a message(see below).  
+Connet to a MongoDB at `mongoUrl`. `cb` is optional callback. It returns a function that insert a message(see below).  
 when connection established, cb(err) fires.
 
 
 ```js
-var insert = db('mongodb://localhost/quai', 'loc');
+var insert = db('mongodb://localhost/quai');
 ```
 
 ### insert(message, cb);

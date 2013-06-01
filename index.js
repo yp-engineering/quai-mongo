@@ -6,7 +6,7 @@
 // var db = require('quai-mongo');
 // var message = {foo: 'bar'}
 // 
-// var insert = db('mongodb://localhost/quai', 'loc', null, function(err){ 
+// var insert = db('mongodb://localhost/quai', function(err){ 
 //   if (err) { console.error(err); return 1; };
 //   console.log('Connected.');
 // 
@@ -32,7 +32,7 @@ var MongoClient = require('mongodb').MongoClient;
 // var formatMessage = require('./formatMessage.js');
 var dbCon = null;
 
-module.exports = function(dbUrl, component, formatMessage, cb) {
+module.exports = function(dbUrl, cb) {
   MongoClient.connect(dbUrl, function(err, db) {
     if(err) {
       if (cb) {
@@ -72,14 +72,6 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
       return 1;
     };
 
-    if (formatMessage) {
-      clonedMessage = formatMessage(clonedMessage);
-    };
-    // var now = new Date();
-    // clonedMessage.meta.date = now.getFullYear().toString() + pad(now.getMonth()) + pad(now.getDate());
-    // clonedMessage.meta.component = component;
-    // clonedMessage = formatMessage(clonedMessage);
-
     dbCon.collection('log').insert(clonedMessage,
     function(err, device) {
       if (err) { 
@@ -102,8 +94,3 @@ module.exports = function(dbUrl, component, formatMessage, cb) {
     });
   };
 };
-
-function pad (str) { 
-  str = String(str); 
-  return (str.length < 2) ? "0" + str : str; 
-}; 
