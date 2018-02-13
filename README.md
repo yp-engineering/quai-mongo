@@ -98,7 +98,7 @@ for development
 ### Coding Guidlines
 
 * Style Guide - http://nodeguide.com/style.html
-* Avoid frameworks/abstractions ([web](http://expressjs.com/), [test](http://visionmedia.github.com/mocha/), [control flow](https://github.com/caolan/async)) untill you feel a pain
+* Avoid frameworks/abstractions ([web](http://expressjs.com/), [test](http://mochajs.org/), [control flow](https://github.com/caolan/async)) untill you feel a pain
 * "use strict" at the top of every js file
 * Process monitoring - I like forever
 * GET /health end-point
